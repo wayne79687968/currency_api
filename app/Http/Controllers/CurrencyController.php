@@ -27,12 +27,22 @@ class CurrencyController extends BaseController
 
     public function exchange(Request $request)
     {
+        if (!$request->has(['amount', 'source', 'target'])) {
+            return response()->json(['result' => 'error', 'msg' => 'Missing parameters'], 400);
+        }
+
         $amount = str_replace(['$', ','], '', $request->input('amount'));
         $amount = floatval($amount);
         $source = $request->input("source");
         $target = $request->input("target");
 
         $rates = $this->rates;
+        if (!isset($rates[$source])) {
+            return response()->json(["result" => "error", "msg" => "There is no source for {$source} in the rate data"], 400);
+        } else if (!isset($rates[$source][$target])) {
+            return response()->json(["result" => "error", "msg" => "There is no target for {$target} in the rate data"], 400);
+        }
+
         $rate = floatval($rates[$source][$target]);
         $convertedAmount = $amount * $rate;
 
