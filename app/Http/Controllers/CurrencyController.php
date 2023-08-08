@@ -89,6 +89,6 @@ class CurrencyController extends BaseController
         $convertedAmount = $amount * $rate;
         $convertedAmount = number_format(round($convertedAmount, 2), 2);
 
-        return response()->json(["msg" => "success", "data" => ["amount" => "$" . $convertedAmount]]);
+        return response()->json(["result" => "success", "data" => ["amount" => "$" . $convertedAmount]]);
     }
 }
