@@ -40,3 +40,9 @@ EXCHANGE_RATE_API_KEY="${YOUR_API_KEY}"
 ```
 
 你可以從 [ExchangeRate-API](https://www.exchangerate-api.com/) 註冊一個帳號來獲得 API 金鑰。
+
+## 單元測試
+
+```bash
+php artisan test
+```
