@@ -24,8 +24,6 @@ cd currency_api/
 php artisan serve
 ```
 
-請注意，由於 ExchangeRate-API 不支援本機，所以你只能在本機上測試 `exchange` API。
-
 ### 線上測試
 
 你可以使用以下的網址來測試 `exchange` 和 `exchangerate` API：
