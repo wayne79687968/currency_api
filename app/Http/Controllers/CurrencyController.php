@@ -27,11 +27,11 @@ class CurrencyController extends BaseController
 
     public function exchange(Request $request)
     {
-        if (!$request->has(['amount', 'source', 'target'])) {
-            return response()->json(['result' => 'error', 'msg' => 'Missing parameters'], 400);
+        if (!$request->has(["amount", "source", "target"])) {
+            return response()->json(["result" => "error", "msg" => "Missing parameters"], 400);
         }
 
-        $amount = str_replace(['$', ','], '', $request->input('amount'));
+        $amount = str_replace(["$", ","], "", $request->input("amount"));
         $amount = floatval($amount);
         $source = $request->input("source");
         $target = $request->input("target");
