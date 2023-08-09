@@ -19,12 +19,12 @@ class CurrencyExchangeTest extends TestCase
 
         $response->assertStatus(200)
                  ->assertJson([
-                     "result" => "success",
+                     "msg" => "success",
                  ]);
 
         $data = $response->json();
-        $this->assertIsString($data["data"]["amount"]);
-        $this->assertStringStartsWith("$", $data["data"]["amount"]);
+        $this->assertIsString($data["amount"]);
+        $this->assertStringStartsWith("$", $data["amount"]);
     }
     
     public function testMissingAmount()
@@ -33,8 +33,7 @@ class CurrencyExchangeTest extends TestCase
 
         $response->assertStatus(400)
                  ->assertJson([
-                     "result" => "error",
-                     "msg" => "Missing parameters",
+                     "msg" => "error: Missing parameters",
                  ]);
     }
 
@@ -44,8 +43,7 @@ class CurrencyExchangeTest extends TestCase
 
         $response->assertStatus(400)
                  ->assertJson([
-                     "result" => "error",
-                     "msg" => "There is no source for BTC in the rate data",
+                     "msg" => "error: There is no source for BTC in the rate data",
                  ]);
     }
 
@@ -55,8 +53,7 @@ class CurrencyExchangeTest extends TestCase
 
         $response->assertStatus(400)
                  ->assertJson([
-                     "result" => "error",
-                     "msg" => "There is no target for BTC in the rate data",
+                     "msg" => "error: There is no target for BTC in the rate data",
                  ]);
     }
 
@@ -64,7 +61,7 @@ class CurrencyExchangeTest extends TestCase
     {
         // 模擬外部 API 的回應
         $mockResponse = json_encode([
-            'result' => 'success',
+            'msg' => 'success',
             'conversion_rates' => [
                 'JPY' => 111.801,
             ],
@@ -91,7 +88,7 @@ class CurrencyExchangeTest extends TestCase
                  ]);
 
         $data = $response->json();
-        $this->assertIsString($data['data']['amount']);
-        $this->assertStringStartsWith('$', $data['data']['amount']);
+        $this->assertIsString($data['amount']);
+        $this->assertStringStartsWith('$', $data['amount']);
     }
 }
