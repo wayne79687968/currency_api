@@ -29,7 +29,7 @@ class CurrencyController extends BaseController
     public function exchange(Request $request)
     {
         if (!$request->has(["amount", "source", "target"])) {
-            return response()->json(["result" => "error", "msg" => "Missing parameters"], 400);
+            return response()->json(["msg" => "error: Missing parameters"], 400);
         }
 
         $amount = str_replace(["$", ","], "", $request->input("amount"));
@@ -39,9 +39,9 @@ class CurrencyController extends BaseController
 
         $rates = $this->rates;
         if (!isset($rates[$source])) {
-            return response()->json(["result" => "error", "msg" => "There is no source for {$source} in the rate data"], 400);
+            return response()->json(["msg" => "error: There is no source for {$source} in the rate data"], 400);
         } else if (!isset($rates[$source][$target])) {
-            return response()->json(["result" => "error", "msg" => "There is no target for {$target} in the rate data"], 400);
+            return response()->json(["msg" => "error: There is no target for {$target} in the rate data"], 400);
         }
 
         $rate = floatval($rates[$source][$target]);
@@ -49,13 +49,13 @@ class CurrencyController extends BaseController
 
         $convertedAmount = number_format(round($convertedAmount, 2), 2);
 
-        return response()->json(["result" => "success", "data" => ["amount" => "$" . $convertedAmount]]);
+        return response()->json(["msg" => "success", "amount" => "$" . $convertedAmount]);
     }
 
     public function exchangeByExchangerateApi(Request $request)
     {
         if (!$request->has(["amount", "source", "target"])) {
-            return response()->json(["result" => "error", "msg" => "Missing parameters"], 400);
+            return response()->json(["msg" => "error: Missing parameters"], 400);
         }
 
         $amount = str_replace(["$", ","], "", $request->input("amount"));
@@ -75,20 +75,20 @@ class CurrencyController extends BaseController
 
         if ($httpCode != 200) {
             Log::error("Exchangerate-api Error, url: {$url}, err_msg: {$response}");
-            return response()->json(["result" => "error", "msg" => "Exchangerate-api Error, url: {$url}, err_msg: {$response}"], 400);
+            return response()->json(["msg" => "error: Exchangerate-api Error, url: {$url}, err_msg: {$response}"], 400);
         }
 
         $data = json_decode($response, true);
 
         if (!isset($data["conversion_rates"][$target])) {
             Log::error("no $target in conversion_rates");
-            return response()->json(["result" => "error", "msg" => "no $target in conversion_rates"], 400);
+            return response()->json(["msg" => "error: no $target in conversion_rates"], 400);
         }
 
         $rate = floatval($data["conversion_rates"][$target]);
         $convertedAmount = $amount * $rate;
         $convertedAmount = number_format(round($convertedAmount, 2), 2);
 
-        return response()->json(["result" => "success", "data" => ["amount" => "$" . $convertedAmount]]);
+        return response()->json(["msg" => "success", "amount" => "$" . $convertedAmount]);
     }
 }
