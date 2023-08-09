@@ -47,7 +47,7 @@ class CurrencyController extends BaseController
         $rate = floatval($rates[$source][$target]);
         $convertedAmount = $amount * $rate;
 
-        $convertedAmount = number_format(round($convertedAmount, 2), 2);
+        $convertedAmount = round($convertedAmount, 2);
 
         return response()->json(["msg" => "success", "amount" => "$" . $convertedAmount]);
     }
@@ -87,7 +87,7 @@ class CurrencyController extends BaseController
 
         $rate = floatval($data["conversion_rates"][$target]);
         $convertedAmount = $amount * $rate;
-        $convertedAmount = number_format(round($convertedAmount, 2), 2);
+        $convertedAmount = round($convertedAmount, 2);
 
         return response()->json(["msg" => "success", "amount" => "$" . $convertedAmount]);
     }
